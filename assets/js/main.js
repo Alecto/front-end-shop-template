@@ -1,36 +1,53 @@
-let buttonsContainer = document.querySelector('.page-content');
-let cartCounterLabel = document.querySelector('#cart-counter');
+const contentContainer = document.querySelector('#content-container');
+const cartCounterLabel = document.querySelector('#cart-counter-label');
+
 let cartCounter = 0;
 let cartPrice = 0;
 
-let btnClickHandler = (e) => {
-  let target = e.target;
+const incrementCounter = () => {
+  cartCounterLabel.innerHTML = `${++cartCounter}`;
+  if (cartCounter === 1) cartCounterLabel.style.display = 'block';
+};
 
-  if (target && target.matches('button.item-actions__cart')) {
+const getMockData = (t) => +t.parentElement
+  .previousElementSibling
+  .innerHTML
+  .replace(/^\$(\d+)\s\D+(\d+).*$/u, '$1.$2');
 
-    cartCounterLabel.innerHTML = `${++cartCounter}`;
-    if (cartCounter === 1) cartCounterLabel.style.display = 'block';
+const getPrice = (t, price) => Math.round((price + getMockData(t)) * 100) / 100;
 
-    const mockData = +target
-      .parentElement
-      .previousElementSibling
-      .innerHTML
-      .replace(/^\$(\d+)\s\D+(\d+).*$/u, '$1.$2');
+const disableControls = (t, fn) => {
+  contentContainer.removeEventListener('click', fn);
+  t.disabled = true;
+};
 
-    cartPrice = Math.round((cartPrice + mockData) * 100) / 100;
-    let restoreHTML = target.innerHTML;
+const enableControls = (t, fn) => {
+  contentContainer.addEventListener('click', fn);
+  t.disabled = false;
+};
+
+const btnClickHandler = (e) => {
+  const target = e.target;
+  const interval = 2000;
+
+  let restoreHTML = null;
+
+  if (target && target.matches('.item-actions__cart')) {
+
+    incrementCounter();
+
+    cartPrice = getPrice(target, cartPrice);
+    restoreHTML = target.innerHTML;
 
     target.innerHTML = `Added ${cartPrice.toFixed(2)} $`;
 
-    buttonsContainer.removeEventListener('click', btnClickHandler);
-    target.disabled = true;
+    disableControls(target, btnClickHandler);
 
     setTimeout(() => {
       target.innerHTML = restoreHTML;
-      buttonsContainer.addEventListener('click', btnClickHandler);
-      target.disabled = false;
-    }, 2000);
+      enableControls(target, btnClickHandler);
+    }, interval);
   }
 };
 
-buttonsContainer.addEventListener('click', btnClickHandler);
+contentContainer.addEventListener('click', btnClickHandler);
