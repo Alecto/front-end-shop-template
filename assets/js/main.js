@@ -7,6 +7,7 @@ let cartPrice = 0;
 const incrementCounter = () => {
   cartCounterLabel.innerHTML = `${++cartCounter}`;
   if (cartCounter === 1) cartCounterLabel.style.display = 'block';
+  if (cartCounter === 0) cartCounterLabel.style.display = 'none';
 };
 
 const getMockData = (t) => +t.parentElement
