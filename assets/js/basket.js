@@ -1,4 +1,4 @@
-
+/* eslint-disable curly */
 export let basketContainer = null;
 
 let basketBtnContainer;
@@ -6,44 +6,102 @@ const headerNavbar = document.querySelector('.page-header__navbar');
 
 const createElement = ({type, attrs, container = null}) => {
   const el = document.createElement(type);
-  for (let key in attrs) { 
-    if (key === 'innerText') el.innerHTML = attrs[key]
-      else if (key.indexOf('data') === 0) el.setAttribute(`data-${key.slice(4)}`, attrs[key])
-        else el.setAttribute(key, attrs[key]);
-  };
-  
+
+  for (let key in attrs) {
+    if (key === 'innerText') el.innerHTML = attrs[key];
+    else if (key.indexOf('data') === 0) el.setAttribute(`data-${key.slice(4)}`, attrs[key]);
+    else el.setAttribute(key, attrs[key]);
+  }
+
   if (container) container.append(el);
+
   return el;
 };
 
 const createBasketContainer = (c) => {
-  basketContainer = createElement({type: 'div', attrs: {class: 'well basket__container'}, container: headerNavbar});
-  createElement({type: 'p', attrs: {innerText: `В корзине ${c} товаров`}, container: basketContainer});
+  basketContainer = createElement({type: 'div',
+    attrs: {class: 'well basket__container'},
+    container: headerNavbar});
+  createElement({type: 'p',
+    attrs: {innerText: `В корзине ${c} товаров`},
+    container: basketContainer});
 };
 
 const createBasketBtn = (count, container) => {
-  basketBtnContainer =  createElement({type: 'div', attrs: {class: 'basket__btn-container', id: 'btn-container'}, container: container});
-  createElement({type: 'button', attrs: {class: 'btn btn-primary basket__btn-next', id: 'btn-next', type: 'button', innerText: 'Продолжить покупки'}, container: basketBtnContainer});
+  basketBtnContainer = createElement({type: 'div',
+    attrs: {class: 'basket__btn-container',
+      id: 'btn-container'},
+    container});
+  createElement({type: 'button',
+    attrs: {class: 'btn btn-primary basket__btn-next',
+      id: 'btn-next',
+      type: 'button',
+      innerText: 'Продолжить покупки'},
+    container: basketBtnContainer});
   if (count > 0) {
-    createElement({type: 'button', attrs: {class: 'btn btn-primary basket__btn-clear', type: 'button', innerText: 'Очистить корзину'}, container: basketBtnContainer});
-    createElement({type: 'button', attrs: {class: 'btn btn-primary basket__btn-order', type: 'submit', innerText: 'Оформить заказ'}, container: basketBtnContainer});
-  };
+    createElement({type: 'button',
+      attrs: {class: 'btn btn-primary basket__btn-clear',
+        type: 'button',
+        innerText: 'Очистить корзину'},
+      container: basketBtnContainer});
+    createElement({type: 'button',
+      attrs: {class: 'btn btn-primary basket__btn-order',
+        type: 'submit',
+        innerText: 'Оформить заказ'},
+      container: basketBtnContainer});
+  }
 };
 
 const createBasketList = (container, arr) => {
   let sum = 0;
-  arr.forEach(el => {
-    let basketItem =  createElement({type: 'div', attrs: {class: 'basket__item-container', datacode: `${el.productCode}`}, container: container});
-  
-    createElement({type: 'span', attrs: {innerText: `${el.productName}  `}, container: basketItem});
-    createElement({type: 'span', attrs: {class: 'basket__item-count', innerText: `- ${el.count} шт  `}, container: basketItem});
-    createElement({type: 'span', attrs: {innerText: `цена ${el.price.toFixed(2)}$  `}, container: basketItem});
-    createElement({type: 'span', attrs: {innerText: `сумма: ${el.sum.toFixed(2)}$`}, container: basketItem});
-    createElement({type: 'i', attrs: {class: 'fas fa-times basket__item-del'}, container: basketItem});
 
-    sum = (sum + el.sum); 
+  arr.forEach((el) => {
+    let basketItem = createElement({type: 'div',
+      attrs: {
+        class: 'basket__item-container',
+        datacode: `${el.productCode}`
+      },
+      container});
+
+    createElement({
+      type: 'span',
+      attrs: {innerText: `${el.productName}  `},
+      container: basketItem
+    });
+    createElement({
+      type: 'span',
+      attrs: {
+        class: 'basket__item-count',
+        innerText: `- ${el.count} шт  `
+      },
+      container: basketItem
+    });
+    createElement({
+      type: 'span',
+      attrs: {innerText: `цена ${el.price.toFixed(2)}$  `},
+      container: basketItem
+    });
+    createElement({
+      type: 'span',
+      attrs: {innerText: `сумма: ${el.sum.toFixed(2)}$`},
+      container: basketItem
+    });
+    createElement({
+      type: 'i',
+      attrs: {class: 'fas fa-times basket__item-del'},
+      container: basketItem
+    });
+
+    sum += el.sum;
   });
-  createElement({type: 'div', attrs: {class: 'basket__total', innerText: `Всего в корзине товаров на сумму ${sum.toFixed(2)}$`}, container: container});
+  createElement({
+    type: 'div',
+    attrs: {
+      class: 'basket__total',
+      innerText: `Всего в корзине товаров на сумму ${sum.toFixed(2)}$`
+    },
+    container
+  });
 };
 
 const createStyle = () => {
@@ -93,17 +151,16 @@ const createStyle = () => {
         cursor: pointer;
         font-size: 10px;
         border-radius: 2px;
-      }
-      `
-      },
-    container:  document.head,
+      }`
+    },
+    container: document.head
   });
 };
 
 export const eraseBasket = () => {
   basketContainer.remove();
   basketContainer = null;
-}
+};
 
 export const createBasket = (count, productArr) => {
   createBasketContainer(count);
@@ -111,16 +168,5 @@ export const createBasket = (count, productArr) => {
   createBasketBtn(count, basketContainer);
   createStyle();
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
