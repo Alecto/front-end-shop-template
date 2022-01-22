@@ -4,10 +4,13 @@ const cartCounterLabel = document.querySelector('#cart-counter-label');
 let cartCounter = 0;
 let cartPrice = 0;
 
-const incrementCounter = () => {
-  cartCounterLabel.innerHTML = `${++cartCounter}`;
-  if (cartCounter === 1) cartCounterLabel.style.display = 'block';
-  if (cartCounter === 0) cartCounterLabel.style.display = 'none';
+const incrementCounter = (label, cn) => {
+  const counter = cn + 1;
+
+  label.innerHTML = `${counter}`;
+  if (counter === 1) cartCounterLabel.style.display = 'block';
+
+  return counter;
 };
 
 const getMockData = (t) => +t.parentElement
@@ -33,9 +36,15 @@ const btnClickHandler = (e) => {
 
   let restoreHTML = null;
 
-  if (target && target.matches('.item-actions__cart')) {
+  if (typeof target !== 'object') {
+    console.error('target не является объектом.');
 
-    incrementCounter();
+    return;
+  }
+
+  if (target.matches('.item-actions__cart')) {
+
+    cartCounter = incrementCounter(cartCounterLabel, cartCounter);
 
     cartPrice = getPrice(target, cartPrice);
     restoreHTML = target.innerHTML;
