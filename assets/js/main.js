@@ -45,12 +45,12 @@ function getPrice(t, p, cb) {
   return Math.round((p + cb(t)) * 100) / 100;
 }
 
-function disableControls(t, el, fn) {
+function disableControls(t, $el, fn) {
   t.disabled = true;
-  el.removeEventListener('click', fn);
+  $el.removeEventListener('click', fn);
 }
 
-function enableControls(t, el, fn) {
+function enableControls(t, $el, fn) {
   t.disabled = false;
-  el.addEventListener('click', fn);
+  $el.addEventListener('click', fn);
 }
