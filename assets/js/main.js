@@ -22,35 +22,35 @@ const btnClickHandler = (e) => {
   disableControls(target, contentContainer, btnClickHandler);
 
   setTimeout(() => {
-    target.innerHTML = restoreHTML;
     enableControls(target, contentContainer, btnClickHandler);
+    target.innerHTML = restoreHTML;
   }, interval);
 };
 
 contentContainer.addEventListener('click', btnClickHandler);
 
-function incrementCounter($label, cn) {
-  $label.innerHTML = `${cn}`;
-  if (cn === 1) $label.style.display = 'block';
+function incrementCounter($label, counter) {
+  $label.innerHTML = `${counter}`;
+  if (counter === 1) $label.style.display = 'block';
 }
 
-function getMockData(t) {
-  return +t.parentElement
+function getMockData(target) {
+  return +target.parentElement
       .previousElementSibling
       .innerHTML
       .replace(/^\$(\d+)\s\D+(\d+).*$/, '$1.$2');
 }
 
-function getPrice(t, p, cb) {
-  return Math.round((p + cb(t)) * 100) / 100;
+function getPrice(target, price, callback) {
+  return Math.round((price + callback(target)) * 100) / 100;
 }
 
-function disableControls(t, $el, fn) {
-  t.disabled = true;
-  $el.removeEventListener('click', fn);
+function disableControls(target, $container, handler) {
+  target.disabled = true;
+  $container.removeEventListener('click', handler);
 }
 
-function enableControls(t, $el, fn) {
-  t.disabled = false;
-  $el.addEventListener('click', fn);
+function enableControls(target, $container, handler) {
+  target.disabled = false;
+  $container.addEventListener('click', handler);
 }
