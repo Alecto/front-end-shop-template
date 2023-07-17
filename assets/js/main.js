@@ -14,7 +14,7 @@ const btnClickHandler = (e) => {
   if (!target.matches('.item-actions__cart')) return;
 
   incrementCounter(cartCounterLabel, ++cartCounter);
-  cartPrice = getPrice(target, cartPrice, getMockData);
+  cartPrice = getPrice(target, cartPrice);
 
   restoreHTML = target.innerHTML;
   target.innerHTML = `Added ${cartPrice.toFixed(2)} $`;
@@ -41,8 +41,8 @@ function getMockData(target) {
       .replace(/^\$(\d+)\s\D+(\d+).*$/, '$1.$2');
 }
 
-function getPrice(target, price, callback) {
-  return Math.round((price + callback(target)) * 100) / 100;
+function getPrice(target, price) {
+  return Math.round((price + getMockData(target)) * 100) / 100;
 }
 
 function disableControls(target, $container, handler) {
