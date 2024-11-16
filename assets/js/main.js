@@ -19,8 +19,7 @@ const btnClickHandler = (e) => {
   disableControls(target, contentContainer, btnClickHandler);
 
   setTimeout(() => {
-    enableControls(target, contentContainer, btnClickHandler);
-    target.innerHTML = restoreHTML;
+    enableControls(target, contentContainer, btnClickHandler, restoreHTML);
   }, interval);
 }
 
@@ -28,8 +27,7 @@ contentContainer.addEventListener('click', btnClickHandler);
 
 function renderCartCounterLabel(label, counter) {
   label.textContent = `${counter}`;
-  if (counter === 1)
-    label.style.display = 'block';
+  if (counter === 1) label.style.display = 'block';
 }
 
 function getMockPrice(target) {
@@ -48,7 +46,8 @@ function disableControls(target, container, handler) {
   container.removeEventListener('click', handler);
 }
 
-function enableControls(target, container, handler) {
+function enableControls(target, container, handler, restoreHTML) {
+  target.innerHTML = restoreHTML
   target.disabled = false;
   container.addEventListener('click', handler);
 }
